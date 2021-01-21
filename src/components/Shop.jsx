@@ -4,13 +4,45 @@ import Preloader from './Preloader'
 import GoodsList from './GoodsList'
 import Cart from './Cart'
 import BasketList from './BasketList'
+import Alert from './Alert'
 
 function Shop() {
 	const [goods, setGoods] = useState([])
 	const [loading, setLoading] = useState(true)
 	const [order, setOrder] = useState([])
 	const [isBasketShow, setBasketShow] = useState(false)
+	const [alertName, setAlertName] = useState('')
 
+	const changeQuantity = (e, id) => {
+		if (e.target.classList.contains('add')) {
+			const newOrder = order.map((el) => {
+				if (el.id === id) {
+					const newQuantity = el.quantity + 1
+					return {
+						...el,
+						quantity: newQuantity
+					}
+				} else {
+					return el
+				}
+			})
+			setOrder(newOrder)
+		}
+		if (e.target.classList.contains('remove')) {
+			const newOrder = order.map((el) => {
+				if (el.id === id) {
+					const newQuantity = el.quantity - 1
+					return {
+						...el,
+						quantity: newQuantity > 0 ? newQuantity : 0
+					}
+				} else {
+					return el
+				}
+			})
+			setOrder(newOrder)
+		}
+	}
 	const addToBasket = (item) => {
 		const itemIndex = order.findIndex((itemId) => itemId.id === item.id)
 		if (itemIndex < 0) {
@@ -32,6 +64,7 @@ function Shop() {
 			})
 			return setOrder(newOrder)
 		}
+		setAlertName(item.name)
 	}
 	const removeFromBasket = (itemId) => {
 		const newOrder = order.filter((el) => {
@@ -41,6 +74,9 @@ function Shop() {
 	}
 	const handleBasketShow = () => {
 		setBasketShow(!isBasketShow)
+	}
+	const closeAlert = () => {
+		setAlertName('')
 	}
 	useEffect(function getGoods() {
 		fetch(API_URL, {
@@ -54,11 +90,13 @@ function Shop() {
 				setLoading(false)
 			})
 	}, [])
+
 	return (
 		<main className="container content">
 			<Cart quantity={order.length} handleBasketShow={handleBasketShow} />
-			{isBasketShow ? <BasketList handleBasketShow={handleBasketShow} order={order} removeFromBasket={removeFromBasket} /> : null}
+			{isBasketShow ? <BasketList handleBasketShow={handleBasketShow} order={order} removeFromBasket={removeFromBasket} changeQuantity={changeQuantity} /> : null}
 			{loading ? <Preloader /> : <GoodsList goods={goods} addToBasket={addToBasket} />}
+			{alertName && <Alert name={alertName} closeAlert={closeAlert} />}
 		</main>
 	)
 }

@@ -56,8 +56,44 @@ nav {
 	max-width: 95%;
 	z-index: 5;
 	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+	animation: show 500ms ease-in-out;
 }
+.collection-item {
+	user-select: none;
+	outline: none;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	font-size: 20px;
+	position: relative;
+	left: 0%;
+	animation: collection 0.3s ease-in-out;
+}
+.collection-item img {
+	max-height: 80px;
+	margin-right: 10px;
+}
+.collection-item__text {
+	flex-grow: 1;
 
+	display: flex;
+}
+.collection .collection-item.active {
+	background-color: #0097a7;
+}
+.collection-item__text i {
+	cursor: pointer;
+	color: #0097a7;
+	margin: 0 5px;
+}
+.collection-item.price {
+	background: #0097a7;
+	text-align: right;
+	color: white;
+}
+.collection-item.active {
+	font-size: 22px;
+}
 .basket-close {
 	position: absolute;
 	top: 0.5rem;
@@ -67,4 +103,47 @@ nav {
 }
 .basket-delete {
 	cursor: pointer;
+}
+.collection-item.order {
+	float: right;
+}
+.btn {
+	background-color: #0097a7;
+}
+@keyframes show {
+	from {
+		top: 30%;
+		opacity: 0;
+	}
+	to {
+		top: 50%;
+		opacity: 1;
+	}
+}
+
+@keyframes collection {
+	from {
+		left: 100%;
+		opacity: 0;
+	}
+	to {
+		left: 0%;
+		opacity: 1;
+	}
+}
+
+#toast-container {
+	top: 2.3rem !important;
+	animation: fade-in 250ms ease-in-out;
+}
+
+@keyframes fade-in {
+	from {
+		opacity: 0;
+		transform: translateY(-4rem);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0rem);
+	}
 }

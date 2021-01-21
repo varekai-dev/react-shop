@@ -13,7 +13,7 @@ function GoodsItem(props) {
 				<p>{description}</p>
 			</div>
 			<div className="card-action">
-				<button className="btn" onClick={() => addToBasket({ id, name, price })}>
+				<button className="btn" onClick={() => addToBasket({ id, name, price, background })}>
 					Buy
 				</button>
 				<span className="right" style={{ fontSize: '1.8rem' }}>
